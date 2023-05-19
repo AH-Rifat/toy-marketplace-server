@@ -30,6 +30,12 @@ async function run() {
         const database = client.db("toyMarketplaceDB");
         const toyCollection = database.collection("toys");
 
+        app.get('/allToys', async (req, res) => {
+            const cursor = toyCollection.find()
+            const result = await cursor.toArray()
+            res.send(result)
+        })
+
         app.get('/myToys/:email', async (req, res) => {
             const email = req.params.email
             const filter = { sellerEmail: email }
