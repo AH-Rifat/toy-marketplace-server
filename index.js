@@ -30,6 +30,14 @@ async function run() {
         const database = client.db("toyMarketplaceDB");
         const toyCollection = database.collection("toys");
 
+        app.get('/myToys/:email', async (req, res) => {
+            const email = req.params.email
+            const filter = { sellerEmail: email }
+            const cursor = toyCollection.find(filter)
+            const result = await cursor.toArray()
+            res.send(result)
+        })
+
         app.post('/addToy', async (req, res) => {
             const data = req.body
             const result = await toyCollection.insertOne(data)
