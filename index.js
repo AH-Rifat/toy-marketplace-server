@@ -32,7 +32,14 @@ async function run() {
 
         app.get('/allToys', async (req, res) => {
             const limit = parseInt(req.query.limit)
-            const cursor = toyCollection.find()
+            const search = req.query.search
+            const query = {}; // Empty query object
+            if (search) {
+                // If search query is provided, add a filter to the query object
+                query.toyName = { $regex: search, $options: 'i' };
+                // Using $regex with 'i' option for case-insensitive search
+            }
+            const cursor = toyCollection.find(query)
             const result = await cursor.toArray()
             const limitedData = result.slice(0, limit)
             res.send(limitedData)
