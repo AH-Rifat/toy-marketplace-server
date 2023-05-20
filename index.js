@@ -31,9 +31,11 @@ async function run() {
         const toyCollection = database.collection("toys");
 
         app.get('/allToys', async (req, res) => {
+            const limit = parseInt(req.query.limit)
             const cursor = toyCollection.find()
             const result = await cursor.toArray()
-            res.send(result)
+            const limitedData = result.slice(0, limit)
+            res.send(limitedData)
         })
 
         app.get('/toy/:id', async (req, res) => {
