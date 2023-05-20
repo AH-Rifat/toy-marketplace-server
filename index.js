@@ -54,9 +54,10 @@ async function run() {
         })
 
         app.get('/myToys/:email', async (req, res) => {
+            const sortBy = parseInt(req.query.sortBy)
             const email = req.params.email
             const filter = { sellerEmail: email }
-            const cursor = toyCollection.find(filter)
+            const cursor = toyCollection.find(filter).sort({ "price": sortBy })
             const result = await cursor.toArray()
             res.send(result)
         })
