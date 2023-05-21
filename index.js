@@ -9,11 +9,6 @@ const app = express()
 app.use(cors())
 app.use(express.json())
 
-app.get('/', (req, res) => {
-    res.send('toy server connected')
-})
-
-
 const uri = `mongodb+srv://${process.env.USER_NAME}:${process.env.USER_PASSWORD}@cluster0.c8viahs.mongodb.net/?retryWrites=true&w=majority`;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
@@ -29,6 +24,10 @@ async function run() {
     try {
         const database = client.db("toyMarketplaceDB");
         const toyCollection = database.collection("toys");
+
+        app.get('/', (req, res) => {
+            res.send('toy server Running...')
+        })
 
         app.get('/allToys', async (req, res) => {
             const limit = parseInt(req.query.limit)
