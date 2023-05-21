@@ -26,7 +26,15 @@ async function run() {
         const toyCollection = database.collection("toys");
 
         app.get('/', (req, res) => {
-            res.send('toy server Running...')
+            res.send('Toy MerkatPlace Website Server is Running...')
+        })
+
+        app.get('/toyByCetagory', async (req, res) => {
+            const cetagoryName = req.query.name
+            const query = { subCategory: cetagoryName }
+            const cursor = toyCollection.find(query)
+            const result = (await cursor.toArray()).slice(0, 3)
+            res.send(result)
         })
 
         app.get('/allToys', async (req, res) => {
